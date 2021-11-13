@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Task } from './shared/utils/interfaces';
+import { TaskService } from './shared/task/task.service';
+import { Task } from 'src/app/shared/utils/interfaces';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -17,8 +19,19 @@ export class AppComponent implements OnInit {
     endDate: new FormControl('', Validators.required),
     description: new FormControl('', Validators.required),
   })
-  public tasks: Task[] = []
   public currentId: number = 0;
+  public tasks: Task[] = [];
+  private destroy$: Subject<void> = new Subject();
+
+  constructor(private taskService: TaskService) {
+    this.taskService
+      .getTasks
+      .asObservable()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(res => {
+      this.tasks = res;
+    });
+  }
 
   ngOnInit(): void {
     this.setCreator();
@@ -30,6 +43,6 @@ export class AppComponent implements OnInit {
 
   public createTask(): void {
     this.form.patchValue({ id: ++this.currentId })
-    this.tasks.push(this.form.value);
+    this.taskService.addNewTask(this.form.value);
   }
 }

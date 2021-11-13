@@ -16,16 +16,19 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'JirO'`, () => {
+  it(`#CreateTask id => currentId`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('JirO');
+    expect(app.form.get('id')?.value).toBe(0);
+    app.createTask()
+    expect(app.form.get('id')?.value).toBe(app.currentId);
   });
 
-  it('should render title', () => {
+  it(`#SetCreator creator => { name: 'Michael' }`, () => {
     const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('JirO app is running!');
+    const app = fixture.componentInstance;
+    expect(app.form.get('creator')?.value).toBe('');
+    app.setCreator();
+    expect(app.form.get('creator')?.value).toEqual({ name: 'Michael' });
   });
 });

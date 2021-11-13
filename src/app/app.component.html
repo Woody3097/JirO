@@ -1,1 +1,22 @@
-Welcome to {{ title }}
+<div class="container">
+  <div class="left" [formGroup]="form">
+    <input type="text" placeholder="Title" formControlName="title">
+    <input type="text" placeholder="Performer" formControlName="performer">
+    <input type="text" placeholder="Start Date" formControlName="startDate">
+    <input type="text" placeholder="End Date" formControlName="endDate">
+    <input type="text" placeholder="Description" formControlName="description">
+    <button [disabled]="form.invalid" (click)="createTask()">Create task</button>
+  </div>
+  <div class="right">
+    <app-task
+      *ngFor="let task of tasks"
+      [id]="task.id"
+      [title]="task.title"
+      [creator]="task.creator"
+      [performer]="task.performer"
+      [startDate]="task.startDate"
+      [endDate]="task.endDate"
+      [description]="task.description"
+    ></app-task>
+  </div>
+</div>

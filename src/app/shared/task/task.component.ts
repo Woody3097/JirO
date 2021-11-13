@@ -7,13 +7,13 @@ import { Customer, Manager, Performer } from 'src/app/shared/utils/interfaces';
   styleUrls: ['./task.component.scss']
 })
 export class TaskComponent implements OnInit {
-  @Input() private id: number = 0;
-  @Input() private title: string = 'testTask';
-  @Input() private creator: Manager | Customer = { name: 'John' };
-  @Input() private performer: Performer = { name: 'Mike' };
-  @Input() private startDate: Date = new Date();
-  @Input() private endDate: Date = new Date();
-  @Input() private description: string = '';
+  @Input() public id: number = 0;
+  @Input() public title: string = 'testTask';
+  @Input() public creator: Manager | Customer = { name: 'John' };
+  @Input() public performer: Performer = { name: 'Mike' };
+  @Input() public startDate: string = '';
+  @Input() public endDate: string = '';
+  @Input() public description: string = '';
 
   constructor() { }
 

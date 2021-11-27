@@ -18,4 +18,9 @@ export class TaskService {
   get getTasks(): BehaviorSubject<Task[]> {
     return this.tasks$;
   }
+
+  public deleteTask(id: number): void {
+    const tasks = this.tasks$.getValue();
+    this.tasks$.next(tasks.filter((el: Task) => el.id !== id));
+  }
 }

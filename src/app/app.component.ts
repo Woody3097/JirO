@@ -43,6 +43,12 @@ export class AppComponent implements OnInit {
 
   public createTask(): void {
     this.form.patchValue({ id: ++this.currentId })
+    this.form.patchValue({ performer: { name: this.getFormValue('performer') } })
     this.taskService.addNewTask(this.form.value);
+    this.form.reset();
+  }
+
+  private getFormValue(control: string): string {
+    return this.form.get(control)?.value;
   }
 }

@@ -1,9 +1,10 @@
 <div class="task">
-  <span>{{ id }}</span>
-  <span>{{ title }}</span>
-  <span>{{ creator.name }}</span>
-  <span>{{ performer.name }}</span>
-  <span>{{ startDate }}</span>
-  <span>{{ endDate }}</span>
-  <span>{{ description }}</span>
+  <span class="del" (click)="deleteTask()">Del</span>
+  <span>Task #{{ id }}</span>
+  <span>Title: {{ title }}</span>
+  <span>Creator: {{ creator.name }}</span>
+  <span>Performer: {{ performer.name }}</span>
+  <span>Start date: {{ startDate }}</span>
+  <span>End date: {{ endDate }}</span>
+  <span>Description: {{ description }}</span>
 </div>

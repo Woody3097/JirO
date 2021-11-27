@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Customer, Manager, Performer } from 'src/app/shared/utils/interfaces';
+import { TaskService } from './task.service';
 
 @Component({
   selector: 'app-task',
@@ -15,7 +16,11 @@ export class TaskComponent implements OnInit {
   @Input() public endDate: string = '';
   @Input() public description: string = '';
 
-  constructor() { }
+  constructor(private taskService: TaskService) { }
 
   ngOnInit(): void {}
+
+  public deleteTask(): void {
+    this.taskService.deleteTask(this.id);
+  }
 }

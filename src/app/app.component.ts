@@ -1,8 +1,32 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TaskService } from './shared/task/task.service';
-import { Task } from 'src/app/shared/utils/interfaces';
+import { ITask } from 'src/app/shared/utils/interfaces';
 import { Subject, takeUntil } from 'rxjs';
+import {Bug} from "./shared/utils/classes";
+import {testTask} from "./shared/utils/mockData";
+
+const printMemberName = (target: any, memberName: string) => {
+  console.log(memberName);
+};
+
+function Confirmable(message: string) {
+  return function (target: Object, key: string | symbol, descriptor: PropertyDescriptor) {
+    const original = descriptor.value;
+
+    descriptor.value = function (...args: any[]) {
+      const allow = confirm(message);
+
+      if (allow) {
+        return original.apply(this, args);
+      } else {
+        return null;
+      }
+    };
+
+    return descriptor;
+  };
+}
 
 @Component({
   selector: 'app-root',
@@ -19,8 +43,9 @@ export class AppComponent implements OnInit {
     endDate: new FormControl('', Validators.required),
     description: new FormControl('', Validators.required),
   })
+  @printMemberName
   public currentId: number = 0;
-  public tasks: Task[] = [];
+  public tasks: ITask[] = [];
   private destroy$: Subject<void> = new Subject();
 
   constructor(private taskService: TaskService) {
@@ -33,7 +58,14 @@ export class AppComponent implements OnInit {
     });
   }
 
+  taskCloningTest(): void {
+    const task = new Bug({ ...testTask }, 10);
+    const taskClone = task.clone();
+    console.log(taskClone);
+  }
+
   ngOnInit(): void {
+    this.taskCloningTest()
     this.setCreator();
   }
 
@@ -41,6 +73,7 @@ export class AppComponent implements OnInit {
     this.form.patchValue({ creator: { name: 'Michael' } })
   }
 
+  @Confirmable('Are you sure?')
   public createTask(): void {
     this.form.patchValue({ id: ++this.currentId })
     this.form.patchValue({ performer: { name: this.getFormValue('performer') } })
@@ -51,4 +84,5 @@ export class AppComponent implements OnInit {
   private getFormValue(control: string): string {
     return this.form.get(control)?.value;
   }
+
 }

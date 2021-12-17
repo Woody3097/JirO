@@ -3,8 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TaskService } from './shared/task/task.service';
 import { ITask } from 'src/app/shared/utils/interfaces';
 import { Subject, takeUntil } from 'rxjs';
-import {Bug} from "./shared/utils/classes";
-import {testTask} from "./shared/utils/mockData";
+import { Bug, Development } from "./shared/utils/classes";
+import { testTask } from "./shared/utils/mockData";
 
 const printMemberName = (target: any, memberName: string) => {
   console.log(memberName);
@@ -53,7 +53,7 @@ export class AppComponent implements OnInit {
       .getTasks
       .asObservable()
       .pipe(takeUntil(this.destroy$))
-      .subscribe(res => {
+      .subscribe((res: any) => {
       this.tasks = res;
     });
   }
@@ -67,6 +67,15 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.taskCloningTest()
     this.setCreator();
+
+    this.testStateFunctionality();
+  }
+
+  public testStateFunctionality(): void {
+    let task = new Development(testTask, 1);
+    console.log(task.state);
+    task.request();
+    console.log(task.state);
   }
 
   public setCreator(): void {
